@@ -1,0 +1,7 @@
+name: Site Info Addon
+description: 'Module for adding site API key field to site information page'
+package: Custom
+type: module
+core: '8.x'
+dependencies:
+  - drupal:jsonapi

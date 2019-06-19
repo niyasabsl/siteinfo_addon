@@ -1,0 +1,37 @@
+<?php
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function siteinfo_addon_form_system_site_information_settings_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Adding site api key textfield for site information form
+  $form['site_api_key'] = [
+    '#type' => 'textfield',
+    '#title' => t('Site API Key'),
+    '#attributes' => [
+      'placeholder' => t('No API Key yet'),
+    ],
+    '#default_value' => \Drupal::config('system.site')->get('siteapikey'),
+  ];
+  $form['actions']['submit']['#value'] = t('Update Configuration');
+  $form['#submit'][] = 'site_api_key_submit';
+}
+
+/**
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *
+ * This will save site api key text field value in system config
+ */
+function site_api_key_submit($form, FormStateInterface $form_state) {
+  // triggers only if site api key is changed.
+  if (\Drupal::config('system.site')->get('siteapikey') != $form_state->getValue('site_api_key')){
+    \Drupal::configFactory()
+      ->getEditable('system.site')
+      ->set('siteapikey', $form_state->getValue('site_api_key'))
+      ->save();
+    drupal_set_message(t('Site API Key has been saved.'));
+  }
+}

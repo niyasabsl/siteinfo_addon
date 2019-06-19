@@ -1,0 +1,6 @@
+siteinfo_addon.page_json:
+  path: '/page_json/{apikey}/{nid}'
+  defaults:
+    _controller: '\Drupal\siteinfo_addon\Controller\NodeRenderController::renderNodeJson'
+  requirements:
+    _access: 'TRUE'
